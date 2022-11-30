@@ -1,0 +1,27 @@
+{
+  "success" : true,
+  "code" : 0,
+  "message" : "Ok",
+  "data" : [
+    {
+      "building_name": "310",
+      "room_number": "B312"
+    },
+    {
+      "building_name": "310",
+      "room_number": "B313"
+    },
+    {
+      "building_name": "310",
+      "room_number": "718"
+    },
+    {
+      "building_name": "310",
+      "room_number": "728"
+    },
+    {
+      "building_name": "310",
+      "room_number": "726"
+    }
+  ]
+}
