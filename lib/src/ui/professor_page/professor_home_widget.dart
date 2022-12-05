@@ -80,7 +80,7 @@ class _ProfessorWidgetState extends State<ProfessorWidget> {
         if (device.name == 'LE_WF-1000XM4') {
           print(
               'Discover ! ${device.id} : ${device.name} : ${device.serviceUuids}');
-          _entranceProvider.signalReceive();
+          _entranceProvider.signalReceive(null);
         }
       }
     }, onError: (Object error) {

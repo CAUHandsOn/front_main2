@@ -11,7 +11,7 @@ class EntranceProvider extends ChangeNotifier {
   static late String deviceId = '34:14:B5:41:A2:7E';
 
   // 맨처음 singnal을 받으면 userProvider에서 정보를 받아서 서버로 전송
-  _callEnterAPI() async {
+  _callEnterAPI(pvdSPF) async {
     isConnected = true;
     String url = 'https://bho.ottitor.shop/room/$deviceId/me';
 
@@ -24,9 +24,10 @@ class EntranceProvider extends ChangeNotifier {
     if (response.statusCode == 200) {
       print("callEnterAPI success!");
       print('CallEnterAPI Notify');
-
-
-
+      // if (!pvdSPF){ //학생이면 출입 로그 추가
+      //   var classroomName = response.body[]
+      //   // pvdSPF.decodedMap[]
+      // }
       notifyListeners();
       return;
     } else {
@@ -74,13 +75,13 @@ class EntranceProvider extends ChangeNotifier {
   }
 
   // BlueTooth scan signal을 받으면 이 함수를 호출해서 idle 타임 초기화
-  void signalReceive() async{
+  void signalReceive(pvdSPF) async{
     idleTime = 0;
     if (isConnected == false) {
       // Signal Backend
       isConnected = true;
 
-      await _callEnterAPI();
+      await _callEnterAPI(pvdSPF);
       print('signalReceive Notify');
       notifyListeners();
     }

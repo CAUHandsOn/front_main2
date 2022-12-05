@@ -10,10 +10,12 @@ import 'package:provider/provider.dart';
 
 import '../../provider/classroom_provider.dart';
 import '../../provider/entrance_provider.dart';
+import '../../provider/sharedPreference_provider.dart';
 
 class StudentWidget extends StatefulWidget {
-  StudentWidget({Key? key,required this.user}) : super(key: key);
+  StudentWidget({Key? key,required this.user, required this.pvdSPF}) : super(key: key);
   late User user;
+  late SPFProvider pvdSPF;
 
   @override
   State<StudentWidget> createState() => _StudentWidgetState();
@@ -86,7 +88,7 @@ class _StudentWidgetState extends State<StudentWidget> {
         if (device.name == 'LE_WF-1000XM4') {
           print(
               'Discover ! ${device.id} : ${device.name} : ${device.serviceUuids}');
-          _entranceProvider.signalReceive();
+          _entranceProvider.signalReceive(widget.pvdSPF);
         }
       }
     }, onError: (Object error) {
