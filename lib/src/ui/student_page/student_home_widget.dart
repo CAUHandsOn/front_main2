@@ -73,6 +73,8 @@ class _StudentWidgetState extends State<StudentWidget> {
   }
 
   void startBluetooth() {
+    _entranceProvider.signalReceive(widget.pvdSPF);
+
     _bottomNavigationProvider = Provider.of<BottomNavigationProvider>(context);
     List<Uuid> services = [];
     List<String> filtered_id = [

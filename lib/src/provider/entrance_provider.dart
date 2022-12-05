@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:handson/src/provider/sharedPreference_provider.dart';
 import 'package:handson/src/provider/user_provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -11,7 +12,7 @@ class EntranceProvider extends ChangeNotifier {
   static late String deviceId = '34:14:B5:41:A2:7E';
 
   // 맨처음 singnal을 받으면 userProvider에서 정보를 받아서 서버로 전송
-  _callEnterAPI(pvdSPF) async {
+  _callEnterAPI(SPFProvider pvdSPF) async {
     isConnected = true;
     String url = 'https://bho.ottitor.shop/room/$deviceId/me';
 
@@ -24,10 +25,18 @@ class EntranceProvider extends ChangeNotifier {
     if (response.statusCode == 200) {
       print("callEnterAPI success!");
       print('CallEnterAPI Notify');
-      // if (!pvdSPF){ //학생이면 출입 로그 추가
-      //   var classroomName = response.body[]
-      //   // pvdSPF.decodedMap[]
-      // }
+
+      if (pvdSPF != null){ //학생이면 출입 로그 추가
+        var classroomName = jsonDecode(response.body)['data']['room']['name'];
+        var getInTime = jsonDecode(response.body)['data']['getIn'];
+
+        if (!pvdSPF.decodedMap.containsKey(classroomName)){
+          pvdSPF.decodedMap[classroomName] = [];
+        }
+        pvdSPF.decodedMap[classroomName]!.add(getInTime);
+        pvdSPF.saveData('example', pvdSPF.decodedMap);
+      }
+
       notifyListeners();
       return;
     } else {
