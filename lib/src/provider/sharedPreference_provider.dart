@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SPFProvider with ChangeNotifier{
-  var decodedMap;
+  var decodedMap = {};
 
   loadData(String key) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();

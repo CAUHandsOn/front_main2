@@ -24,6 +24,9 @@ class EntranceProvider extends ChangeNotifier {
     if (response.statusCode == 200) {
       print("callEnterAPI success!");
       print('CallEnterAPI Notify');
+
+
+
       notifyListeners();
       return;
     } else {
