@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:handson/src/model/user.dart';
 import 'package:handson/src/provider/bottom_navigation_provider.dart';
+import 'package:handson/src/provider/classroom_provider.dart';
 import 'package:handson/src/provider/user_provider.dart';
 import 'package:handson/src/ui/professor_page/prefessor_mypage_widget.dart';
 import 'package:handson/src/ui/professor_page/professor_classroom_widget.dart';

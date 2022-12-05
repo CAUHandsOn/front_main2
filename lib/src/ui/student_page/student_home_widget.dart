@@ -9,6 +9,7 @@ import 'package:handson/src/ui/student_page/student_realtime_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/button_provider.dart';
+import '../../provider/classroom_provider.dart';
 import '../../provider/entrance_provider.dart';
 
 class StudentWidget extends StatefulWidget {
@@ -72,7 +73,6 @@ class _StudentWidgetState extends State<StudentWidget> {
     _userProvider.initUser(widget.user.name, widget.user.email, widget.user.id, widget.user.role,widget.user.accessToken);
     _entranceProvider = context.read<EntranceProvider>();
     _entranceProvider.initTimer();
-
   }
 
   void startBluetooth() {
