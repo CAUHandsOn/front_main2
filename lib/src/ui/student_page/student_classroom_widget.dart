@@ -9,8 +9,7 @@ import '../../provider/classroom_provider.dart';
 import '../professor_page/professor_classroomInfo_widget.dart';
 
 class StudentClassroomWidget extends StatefulWidget {
-  StudentClassroomWidget({Key? key, required this.pvdSPF}) : super(key: key);
-  SPFProvider pvdSPF;
+  StudentClassroomWidget({Key? key}) : super(key: key);
 
   @override
   State<StudentClassroomWidget> createState() => _StudentClassroomWidgetState();
@@ -21,7 +20,7 @@ class _StudentClassroomWidgetState extends State<StudentClassroomWidget> {
   late ClassroomProvider _classroomProvider;
   late List<ClassEntity> classroomList;
 
-  Widget _listBody(SPFProvider pvdSPF){
+  Widget _listBody(){
     _classroomListProvider.getClassroomList();
 
     return Consumer<ClassroomListProvider>(
@@ -46,11 +45,6 @@ class _StudentClassroomWidgetState extends State<StudentClassroomWidget> {
                       create: (BuildContext context) =>
                           ClassroomListProvider(),
                     ),
-                    ChangeNotifierProvider(
-                      create: (BuildContext context) {
-                        return pvdSPF;
-                     }
-                    ),
                   ], child : StudentClassroomInfo(
                   classroomID : _classroomListProvider.classroomList[index].id,
                   classroomName : _classroomListProvider.classroomList[index].name
@@ -63,12 +57,12 @@ class _StudentClassroomWidgetState extends State<StudentClassroomWidget> {
     );
   }
 
-  AppBar myAppBar(SPFProvider pvdSPF){
+  AppBar myAppBar(){
     return AppBar(
       actions: <Widget>[
         IconButton(
           onPressed: () {
-            showSearch(context: context, delegate: Search(_classroomListProvider.classroomListString, _classroomProvider, _classroomListProvider, pvdSPF));
+            showSearch(context: context, delegate: Search(_classroomListProvider.classroomListString, _classroomProvider, _classroomListProvider));
           },
           icon: const Icon(Icons.search),
         ),
@@ -79,12 +73,11 @@ class _StudentClassroomWidgetState extends State<StudentClassroomWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var pvdSPF = widget.pvdSPF;
     _classroomListProvider = Provider.of<ClassroomListProvider>(context,listen: false);
     _classroomProvider = Provider.of<ClassroomProvider>(context,listen: true);
     return Scaffold(
-      appBar: myAppBar(pvdSPF),
-      body: _listBody(pvdSPF),
+      appBar: myAppBar(),
+      body: _listBody(),
     );
   }
 }
@@ -94,8 +87,7 @@ class Search extends SearchDelegate {
   final List<String> searchList;
   final ClassroomProvider thisClassroomProvider;
   final ClassroomListProvider thisClassroomListProvider;
-  SPFProvider pvdSPF;
-  Search(this.searchList, this.thisClassroomProvider, this.thisClassroomListProvider, this.pvdSPF);
+  Search(this.searchList, this.thisClassroomProvider, this.thisClassroomListProvider);
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -154,11 +146,6 @@ class Search extends SearchDelegate {
               ChangeNotifierProvider(
                 create: (BuildContext context) =>
                     ClassroomListProvider(),
-              ),
-              ChangeNotifierProvider(
-                  create: (BuildContext context) {
-                    return pvdSPF;
-                  }
               ),
             ], child : StudentClassroomInfo(
                 classroomID : thisClassroomListProvider.classroomList[index].id,

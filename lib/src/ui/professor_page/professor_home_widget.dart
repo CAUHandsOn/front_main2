@@ -60,7 +60,7 @@ class _ProfessorWidgetState extends State<ProfessorWidget> {
     _userProvider = Provider.of<UserProvider>(context, listen: false);
     _userProvider.initUser(widget.user.name, widget.user.email, widget.user.id, widget.user.role, widget.user.accessToken);
     _entranceProvider = context.read<EntranceProvider>();
-    _entranceProvider.initTimer();
+    _entranceProvider.initTimer(null);
   }
 
   void startBluetooth() {

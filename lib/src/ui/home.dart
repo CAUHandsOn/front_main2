@@ -134,9 +134,8 @@ class _HomeState extends State<Home> {
             SizedBox(
               height: 50,
               child: ElevatedButton(
-                  onPressed: () async{
-                    var pvdSPF = SPFProvider();
-                    await pvdSPF.loadData('example');
+                  onPressed: () {
+                    context.read<SPFProvider>().loadData('entryLog'); //load the device's local data
 
                     // 로그인 process
                     if (_formKey.currentState!.validate()) {
@@ -192,10 +191,7 @@ class _HomeState extends State<Home> {
                                             create: (BuildContext context) =>
                                                 ClassroomListProvider(),
                                           ),
-                                          ChangeNotifierProvider(
-                                            create: (BuildContext context) => pvdSPF,
-                                          ),
-                                        ], child: StudentWidget(user: user, pvdSPF : pvdSPF))));
+                                        ], child: StudentWidget(user: user))));
                           }
                           if (decodedToken['role'] == 'professor') {
                             Navigator.pushReplacement(
@@ -226,10 +222,6 @@ class _HomeState extends State<Home> {
                                           ChangeNotifierProvider(
                                             create: (BuildContext context) =>
                                                 ClassroomListProvider(),
-                                          ),
-                                          ChangeNotifierProvider(
-                                            create: (BuildContext context) =>
-                                                SPFProvider(),
                                           ),
                                         ], child: ProfessorWidget(user: user))));
                           }

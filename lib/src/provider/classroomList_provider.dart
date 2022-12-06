@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:handson/src/provider/user_provider.dart';
 import 'package:http/http.dart' as http;
 import '../model/classEntity.dart';
 import '../ui/home.dart';
@@ -18,7 +19,7 @@ class ClassroomListProvider extends ChangeNotifier {
       Uri.parse(url),
       headers: <String, String>{
         'Content-Type': 'application/json;charset=UTF-8',
-        'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyMDE4NjI3NCIsIm5hbWUiOiLquYDrqoXsirkiLCJlbWFpbCI6Im1za0BjYXUuYWMua3IiLCJpZCI6IjIwMTg2Mjc0Iiwicm9sZSI6InN0dWRlbnQiLCJhdXRoIjoic3R1ZGVudCIsImV4cCI6MTY3NzY3MzQwNH0.XH4WDfYDU15yqxOenoxd8Gy_8W71D9k9YIrktFN8Iidq6AKFU0oNJv_JVIY1Jifjt3Uaj6k5BBNOwq8LhBiiEA'
+        'Authorization': 'Bearer ${UserProvider.accessToken}'
         // 'Authorization': 'Bearer $accessToken'
       },
     );
