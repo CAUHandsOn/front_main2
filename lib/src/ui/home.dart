@@ -137,7 +137,6 @@ class _HomeState extends State<Home> {
                   onPressed: () async{
                     var pvdSPF = SPFProvider();
                     await pvdSPF.loadData('example');
-                    print('loaded pvdSPF is ${pvdSPF.decodedMap}');
 
                     // 로그인 process
                     if (_formKey.currentState!.validate()) {

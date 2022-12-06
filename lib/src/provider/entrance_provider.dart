@@ -30,10 +30,10 @@ class EntranceProvider extends ChangeNotifier {
         var classroomName = jsonDecode(response.body)['data']['room']['name'];
         var getInTime = jsonDecode(response.body)['data']['getIn'];
 
-        if (!pvdSPF.decodedMap.containsKey(classroomName)){
+        if (!pvdSPF.decodedMap.containsKey(classroomName)){ //건물 이름이 키로 존재하지 않으면 리스트 생성
           pvdSPF.decodedMap[classroomName] = [];
         }
-        pvdSPF.decodedMap[classroomName]!.add(getInTime);
+        pvdSPF.decodedMap[classroomName]!.add(getInTime); //건물 이름에 맞는 리스트에 항목 추가
         pvdSPF.saveData('example', pvdSPF.decodedMap);  //출입 로그 저장
       }
 

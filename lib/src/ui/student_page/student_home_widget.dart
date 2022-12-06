@@ -16,7 +16,7 @@ import '../../provider/sharedPreference_provider.dart';
 class StudentWidget extends StatefulWidget {
   StudentWidget({Key? key,required this.user, required this.pvdSPF}) : super(key: key);
   late User user;
-  late SPFProvider pvdSPF;
+  SPFProvider pvdSPF;
 
   @override
   State<StudentWidget> createState() => _StudentWidgetState();
@@ -58,7 +58,7 @@ class _StudentWidgetState extends State<StudentWidget> {
       case 0:
         return const StudentRealtimeWidget();
       case 1:
-        return const StudentClassroomWidget();
+        return StudentClassroomWidget(pvdSPF : widget.pvdSPF);
       case 2:
         return const StudentMyPageWidget();
       default:
