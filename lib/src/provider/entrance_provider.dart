@@ -11,11 +11,10 @@ class EntranceProvider extends ChangeNotifier {
   bool isConnected = false;
   bool isInited = false;
   static late String deviceId = '34:14:B5:41:A2:7E';
-  var _pvdSPF;
   var _classroomName;
 
   // 맨처음 singnal을 받으면 userProvider에서 정보를 받아서 서버로 전송
-  _callEnterAPI() async {
+  _callEnterAPI(SPFProvider pvdSPF) async {
     isConnected = true;
     String url = 'https://bho.ottitor.shop/room/$deviceId/me';
 
@@ -29,17 +28,18 @@ class EntranceProvider extends ChangeNotifier {
       print("callEnterAPI success!");
       print('CallEnterAPI Notify');
 
-      if (_pvdSPF != null){ //학생이면 출입 로그 추가
+      if (pvdSPF != null){ //학생이면 출입 로그 추가
         var classroomName = jsonDecode(response.body)['data']['room']['name'] as String;
         var getInTime = jsonDecode(response.body)['data']['getIn'];
+        _classroomName = _classroomName;
 
-        print(classroomName);
+        pvdSPF.addLog(classroomName, getInTime);
 
-        if (!_pvdSPF.decodedMap.containsKey(classroomName)){ //건물 이름이 키로 존재하지 않으면 리스트 생성
-          _pvdSPF.decodedMap[classroomName] = <String>[];
-        }
-        _pvdSPF.decodedMap[_classroomName]!.add(getInTime); //건물 이름에 맞는 출입 리스트에 항목 추가
-        _pvdSPF.saveData('entryLog', _pvdSPF.decodedMap);  //입실 로그 저장
+        // if (!pvdSPF.decodedMap.containsKey(classroomName)){ //건물 이름이 키로 존재하지 않으면 리스트 생성
+        //   pvdSPF.decodedMap[classroomName] = <String>[];
+        // }
+        // pvdSPF.decodedMap[_classroomName]!.add(getInTime); //건물 이름에 맞는 출입 리스트에 항목 추가
+        // pvdSPF.saveData('entryLog', pvdSPF.decodedMap);  //입실 로그 저장
       }
 
       notifyListeners();
@@ -71,7 +71,7 @@ class EntranceProvider extends ChangeNotifier {
 
   // 맨 처음 프로그램 시작시 이 함수를 통해서 타이머를 실행시킨다.
   // 백엔드에서 매 초마다 idleTime수행
-  void initTimer() {
+  void initTimer(pvdSPF) {
     if (isInited) {
       return;
     }
@@ -83,8 +83,11 @@ class EntranceProvider extends ChangeNotifier {
         isConnected = false;
         _callExitAPI();
 
-        _pvdSPF.decodedMap[_classroomName]!.add(DateFormat('yyyy-MM-dd kk:mm').format(DateTime.now())); //퇴실 시간 추가
-        _pvdSPF.saveData('entryLog', _pvdSPF.decodedMap); //퇴실 로그 저장
+        if (pvdSPF != null){  //퇴장 시 퇴실로그 저장
+          pvdSPF.addLog(_classroomName, DateFormat('yyyy-MM-dd kk:mm').format(DateTime.now())); //퇴실 시간 추가
+          // pvdSPF.decodedMap[_classroomName]!.add(DateFormat('yyyy-MM-dd kk:mm').format(DateTime.now())); //퇴실 시간 추가
+          // pvdSPF.saveData('entryLog', pvdSPF.decodedMap); //퇴실 로그 저장
+        }
 
         print('initTimer Notify');
         notifyListeners();
@@ -99,8 +102,7 @@ class EntranceProvider extends ChangeNotifier {
     if (isConnected == false) {
       // Signal Backend
       isConnected = true;
-      _pvdSPF = pvdSPF; //받아온 pvdSPF 저장해 두었다가 입실 퇴실 때 로그 저장용으로 사용
-      await _callEnterAPI();
+      await _callEnterAPI(pvdSPF);
       print('signalReceive Notify');
       notifyListeners();
     }

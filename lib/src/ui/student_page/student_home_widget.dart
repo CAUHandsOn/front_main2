@@ -14,9 +14,8 @@ import '../../provider/entrance_provider.dart';
 import '../../provider/sharedPreference_provider.dart';
 
 class StudentWidget extends StatefulWidget {
-  StudentWidget({Key? key,required this.user, required this.pvdSPF}) : super(key: key);
+  StudentWidget({Key? key,required this.user}) : super(key: key);
   late User user;
-  SPFProvider pvdSPF;
 
   @override
   State<StudentWidget> createState() => _StudentWidgetState();
@@ -58,7 +57,7 @@ class _StudentWidgetState extends State<StudentWidget> {
       case 0:
         return const StudentRealtimeWidget();
       case 1:
-        return StudentClassroomWidget(pvdSPF : widget.pvdSPF);
+        return StudentClassroomWidget();
       case 2:
         return const StudentMyPageWidget();
       default:
@@ -74,10 +73,10 @@ class _StudentWidgetState extends State<StudentWidget> {
     _userProvider = Provider.of<UserProvider>(context,listen: false);
     _userProvider.initUser(widget.user.name, widget.user.email, widget.user.id, widget.user.role,widget.user.accessToken);
     _entranceProvider = context.read<EntranceProvider>();
-    _entranceProvider.initTimer();
+    _entranceProvider.initTimer(context.read<SPFProvider>());
   }
 
-  void startBluetooth() {
+  void startBluetooth(context) {
     _bottomNavigationProvider = Provider.of<BottomNavigationProvider>(context);
     List<Uuid> services = [];
     List<String> filtered_id = [
@@ -93,7 +92,7 @@ class _StudentWidgetState extends State<StudentWidget> {
         if (device.name == 'LE_WF-1000XM4') {
           print(
               'Discover ! ${device.id} : ${device.name} : ${device.serviceUuids}');
-          _entranceProvider.signalReceive(widget.pvdSPF);
+          _entranceProvider.signalReceive(context.read<SPFProvider>());
         }
       }
     }, onError: (Object error) {
@@ -108,7 +107,7 @@ class _StudentWidgetState extends State<StudentWidget> {
     _bottomNavigationProvider = Provider.of<BottomNavigationProvider>(context);
     _buttonProvider = Provider.of<ButtonProvider>(context);
     _entranceProvider = context.watch<EntranceProvider>();
-    startBluetooth();
+    startBluetooth(context);
     return Scaffold(
       body: _navigationBodyWidget(),
       bottomNavigationBar: _bottomNavigationBarWidget(),

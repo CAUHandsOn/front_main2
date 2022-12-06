@@ -3,6 +3,7 @@ import 'package:handson/src/model/student.dart';
 import 'package:handson/src/provider/bottom_navigation_provider.dart';
 import 'package:handson/src/provider/classroomList_provider.dart';
 import 'package:handson/src/provider/classroom_provider.dart';
+import 'package:handson/src/provider/sharedPreference_provider.dart';
 import 'package:handson/src/provider/user_provider.dart';
 import 'package:handson/src/ui/home.dart';
 import 'package:handson/src/ui/professor_page/professor_classroom_widget.dart';
@@ -18,6 +19,9 @@ void main() {
       ),
       ChangeNotifierProvider(
         create: (c) => ClassroomListProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (c) => SPFProvider(),
       ),
     ],
     child: MyApp(),
