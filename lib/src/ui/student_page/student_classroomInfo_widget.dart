@@ -266,7 +266,7 @@ class _StudentClassroomInfoState extends State<StudentClassroomInfo> {
                                 if (direction == DismissDirection.startToEnd) {
                                   print('길이 ${provider.decodedMap[classroomName]!.length}');
                                   provider.decodedMap[classroomName]!.removeAt(index);
-                                  provider.saveData('example', provider.decodedMap); //삭제할 때마다 SPF에 데이터 새로 저장
+                                  provider.saveData('entryLog', provider.decodedMap); //삭제할 때마다 SPF에 데이터 새로 저장
                                 }
                               });
                             },

@@ -136,7 +136,7 @@ class _HomeState extends State<Home> {
               child: ElevatedButton(
                   onPressed: () async{
                     var pvdSPF = SPFProvider();
-                    await pvdSPF.loadData('example');
+                    await pvdSPF.loadData('entryLog');
 
                     // 로그인 process
                     if (_formKey.currentState!.validate()) {
