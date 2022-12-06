@@ -1,16 +1,17 @@
 import 'dart:collection';
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SPFProvider with ChangeNotifier{
   dynamic decodedMap = HashMap<String, List<String>>();
 
-  void addLog(String classroomName, String getInTime) {
+  void addLog(String classroomName) {
     if (!decodedMap.containsKey(classroomName)){ //건물 이름이 키로 존재하지 않으면 리스트 생성
       decodedMap[classroomName] = <String>[];
     }
-    decodedMap[classroomName]!.add(getInTime); //건물 이름에 맞는 출입 리스트에 항목 추가
+    decodedMap[classroomName]!.add(DateFormat('yyyy-MM-dd kk:mm').format(DateTime.now())); //건물 이름에 맞는 출입 리스트에 항목 추가
     saveData('entryLog', decodedMap);
     notifyListeners();
   }

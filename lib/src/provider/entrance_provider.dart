@@ -30,10 +30,9 @@ class EntranceProvider extends ChangeNotifier {
 
       if (pvdSPF != null){ //학생이면 출입 로그 추가
         var classroomName = jsonDecode(response.body)['data']['room']['name'] as String;
-        var getInTime = jsonDecode(response.body)['data']['getIn'];
         _classroomName = classroomName;
 
-        pvdSPF.addLog(classroomName, getInTime);
+        pvdSPF.addLog(classroomName);
 
         // if (!pvdSPF.decodedMap.containsKey(classroomName)){ //건물 이름이 키로 존재하지 않으면 리스트 생성
         //   pvdSPF.decodedMap[classroomName] = <String>[];
@@ -84,7 +83,7 @@ class EntranceProvider extends ChangeNotifier {
         _callExitAPI();
 
         if (pvdSPF != null){  //퇴장 시 퇴실로그 저장
-          pvdSPF.addLog(_classroomName, DateFormat('yyyy-MM-dd kk:mm').format(DateTime.now())); //퇴실 시간 추가
+          pvdSPF.addLog(_classroomName); //퇴실 시간 추가
           // pvdSPF.decodedMap[_classroomName]!.add(DateFormat('yyyy-MM-dd kk:mm').format(DateTime.now())); //퇴실 시간 추가
           // pvdSPF.saveData('entryLog', pvdSPF.decodedMap); //퇴실 로그 저장
         }
