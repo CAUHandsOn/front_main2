@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SPFProvider with ChangeNotifier{
-  HashMap<String, List<String>> decodedMap = HashMap<String, List<String>>();
+  dynamic decodedMap = HashMap<String, List<String>>();
 
   loadData(String key) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -31,7 +31,7 @@ class SPFProvider with ChangeNotifier{
     //     '2023-11-25T12:27:24.138883963', '2023-11-26T12:27:24.138883963', '2023-11-27T12:27:24.138883963'];
 
     String encodedMap = json.encode(data);
-    print('save data is $encodedMap');
+    print('save encoded data is $encodedMap');
 
     print('here is 저장 $encodedMap');
     prefs.setString(key, encodedMap);

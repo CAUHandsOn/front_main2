@@ -242,7 +242,7 @@ class _StudentClassroomInfoState extends State<StudentClassroomInfo> {
                       ),
                       const SizedBox(height: 40,),
 
-                      (provider.decodedMap[classroomName] == null || provider.decodedMap[classroomName]!.isEmpty)
+                      (provider.decodedMap == null || provider.decodedMap[classroomName] == null || provider.decodedMap[classroomName]!.isEmpty)
                           ? const Padding( //비어 있으면
                         padding: EdgeInsets.all(16.0),
                         child: Center(

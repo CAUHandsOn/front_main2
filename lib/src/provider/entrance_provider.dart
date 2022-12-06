@@ -34,7 +34,7 @@ class EntranceProvider extends ChangeNotifier {
           pvdSPF.decodedMap[classroomName] = [];
         }
         pvdSPF.decodedMap[classroomName]!.add(getInTime);
-        pvdSPF.saveData('example', pvdSPF.decodedMap);
+        pvdSPF.saveData('example', pvdSPF.decodedMap);  //출입 로그 저장
       }
 
       notifyListeners();
