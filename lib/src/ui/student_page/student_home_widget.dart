@@ -8,6 +8,7 @@ import 'package:handson/src/ui/student_page/student_mypage_widget.dart';
 import 'package:handson/src/ui/student_page/student_realtime_widget.dart';
 import 'package:provider/provider.dart';
 
+import '../../provider/button_provider.dart';
 import '../../provider/classroom_provider.dart';
 import '../../provider/entrance_provider.dart';
 import '../../provider/sharedPreference_provider.dart';
@@ -25,6 +26,7 @@ class _StudentWidgetState extends State<StudentWidget> {
   late UserProvider _userProvider;
   late BottomNavigationProvider _bottomNavigationProvider;
   late EntranceProvider _entranceProvider;
+  late ButtonProvider _buttonProvider;
 
   Widget _bottomNavigationBarWidget(){
     return BottomNavigationBar(
@@ -44,6 +46,9 @@ class _StudentWidgetState extends State<StudentWidget> {
       ],
       onTap: (index){
         _bottomNavigationProvider.updateIndex(index);
+        if (_buttonProvider.currentEditButton == 1){
+          _buttonProvider.updateEditButton(0);
+        }
       },
       currentIndex: _bottomNavigationProvider.currentNavigationIndex,
     );
@@ -100,6 +105,8 @@ class _StudentWidgetState extends State<StudentWidget> {
   @override
   Widget build(BuildContext context) {
     print("build: StudentHomeWidget");
+    _bottomNavigationProvider = Provider.of<BottomNavigationProvider>(context);
+    _buttonProvider = Provider.of<ButtonProvider>(context);
     _entranceProvider = context.watch<EntranceProvider>();
     startBluetooth();
     return Scaffold(
