@@ -9,7 +9,8 @@ import '../../provider/classroom_provider.dart';
 import '../professor_page/professor_classroomInfo_widget.dart';
 
 class StudentClassroomWidget extends StatefulWidget {
-  const StudentClassroomWidget({Key? key}) : super(key: key);
+  StudentClassroomWidget({Key? key, required this.pvdSPF}) : super(key: key);
+  SPFProvider pvdSPF;
 
   @override
   State<StudentClassroomWidget> createState() => _StudentClassroomWidgetState();
@@ -20,7 +21,7 @@ class _StudentClassroomWidgetState extends State<StudentClassroomWidget> {
   late ClassroomProvider _classroomProvider;
   late List<ClassEntity> classroomList;
 
-  Widget _listBody(){
+  Widget _listBody(SPFProvider pvdSPF){
     _classroomListProvider.getClassroomList();
 
     return Consumer<ClassroomListProvider>(
@@ -33,9 +34,7 @@ class _StudentClassroomWidgetState extends State<StudentClassroomWidget> {
               ),
             ),
             trailing: const Icon(Icons.arrow_forward),
-            onTap: () async{
-              var pvdSPF = SPFProvider();
-              // await pvdSPF.loadData('example');
+            onTap: () {
 
               Navigator.push(context, MaterialPageRoute(builder: (context) =>
                   MultiProvider(providers: [
@@ -64,12 +63,12 @@ class _StudentClassroomWidgetState extends State<StudentClassroomWidget> {
     );
   }
 
-  AppBar myAppBar(){
+  AppBar myAppBar(SPFProvider pvdSPF){
     return AppBar(
       actions: <Widget>[
         IconButton(
           onPressed: () {
-            showSearch(context: context, delegate: Search(_classroomListProvider.classroomListString, _classroomProvider, _classroomListProvider));
+            showSearch(context: context, delegate: Search(_classroomListProvider.classroomListString, _classroomProvider, _classroomListProvider, pvdSPF));
           },
           icon: const Icon(Icons.search),
         ),
@@ -80,11 +79,12 @@ class _StudentClassroomWidgetState extends State<StudentClassroomWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var pvdSPF = widget.pvdSPF;
     _classroomListProvider = Provider.of<ClassroomListProvider>(context,listen: false);
     _classroomProvider = Provider.of<ClassroomProvider>(context,listen: true);
     return Scaffold(
-      appBar: myAppBar(),
-      body: _listBody(),
+      appBar: myAppBar(pvdSPF),
+      body: _listBody(pvdSPF),
     );
   }
 }
@@ -94,7 +94,8 @@ class Search extends SearchDelegate {
   final List<String> searchList;
   final ClassroomProvider thisClassroomProvider;
   final ClassroomListProvider thisClassroomListProvider;
-  Search(this.searchList, this.thisClassroomProvider, this.thisClassroomListProvider);
+  SPFProvider pvdSPF;
+  Search(this.searchList, this.thisClassroomProvider, this.thisClassroomListProvider, this.pvdSPF);
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -140,9 +141,7 @@ class Search extends SearchDelegate {
           title: Text(
             suggestionList[index],
           ),
-          onTap: () async{
-            var pvdSPF = SPFProvider();
-            // await pvdSPF.loadData('example');
+          onTap: () {
 
             print('here is id ${thisClassroomListProvider.classroomList[index].id}');
             selectedResult = suggestionList[index];

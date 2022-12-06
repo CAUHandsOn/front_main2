@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:handson/src/provider/sharedPreference_provider.dart';
 import 'package:handson/src/provider/user_provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -11,7 +12,7 @@ class EntranceProvider extends ChangeNotifier {
   static late String deviceId = '34:14:B5:41:A2:7E';
 
   // 맨처음 singnal을 받으면 userProvider에서 정보를 받아서 서버로 전송
-  _callEnterAPI() async {
+  _callEnterAPI(SPFProvider pvdSPF) async {
     isConnected = true;
     String url = 'https://bho.ottitor.shop/room/$deviceId/me';
 
@@ -25,7 +26,16 @@ class EntranceProvider extends ChangeNotifier {
       print("callEnterAPI success!");
       print('CallEnterAPI Notify');
 
+      if (pvdSPF != null){ //학생이면 출입 로그 추가
+        var classroomName = jsonDecode(response.body)['data']['room']['name'];
+        var getInTime = jsonDecode(response.body)['data']['getIn'];
 
+        if (!pvdSPF.decodedMap.containsKey(classroomName)){ //건물 이름이 키로 존재하지 않으면 리스트 생성
+          pvdSPF.decodedMap[classroomName] = [];
+        }
+        pvdSPF.decodedMap[classroomName]!.add(getInTime); //건물 이름에 맞는 리스트에 항목 추가
+        pvdSPF.saveData('example', pvdSPF.decodedMap);  //출입 로그 저장
+      }
 
       notifyListeners();
       return;
@@ -74,13 +84,13 @@ class EntranceProvider extends ChangeNotifier {
   }
 
   // BlueTooth scan signal을 받으면 이 함수를 호출해서 idle 타임 초기화
-  void signalReceive() async{
+  void signalReceive(pvdSPF) async{
     idleTime = 0;
     if (isConnected == false) {
       // Signal Backend
       isConnected = true;
 
-      await _callEnterAPI();
+      await _callEnterAPI(pvdSPF);
       print('signalReceive Notify');
       notifyListeners();
     }
