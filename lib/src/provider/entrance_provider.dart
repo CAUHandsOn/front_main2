@@ -31,7 +31,7 @@ class EntranceProvider extends ChangeNotifier {
       if (pvdSPF != null){ //학생이면 출입 로그 추가
         var classroomName = jsonDecode(response.body)['data']['room']['name'] as String;
         var getInTime = jsonDecode(response.body)['data']['getIn'];
-        _classroomName = _classroomName;
+        _classroomName = classroomName;
 
         pvdSPF.addLog(classroomName, getInTime);
 
