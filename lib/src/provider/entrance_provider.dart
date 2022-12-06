@@ -27,11 +27,13 @@ class EntranceProvider extends ChangeNotifier {
       print('CallEnterAPI Notify');
 
       if (pvdSPF != null){ //학생이면 출입 로그 추가
-        var classroomName = jsonDecode(response.body)['data']['room']['name'];
+        var classroomName = jsonDecode(response.body)['data']['room']['name'] as String;
         var getInTime = jsonDecode(response.body)['data']['getIn'];
 
+        print(classroomName);
+
         if (!pvdSPF.decodedMap.containsKey(classroomName)){ //건물 이름이 키로 존재하지 않으면 리스트 생성
-          pvdSPF.decodedMap[classroomName] = [];
+          pvdSPF.decodedMap[classroomName] = <String>[];
         }
         pvdSPF.decodedMap[classroomName]!.add(getInTime); //건물 이름에 맞는 리스트에 항목 추가
         pvdSPF.saveData('example', pvdSPF.decodedMap);  //출입 로그 저장
@@ -85,6 +87,7 @@ class EntranceProvider extends ChangeNotifier {
 
   // BlueTooth scan signal을 받으면 이 함수를 호출해서 idle 타임 초기화
   void signalReceive(pvdSPF) async{
+    print("signalReceive");
     idleTime = 0;
     if (isConnected == false) {
       // Signal Backend
