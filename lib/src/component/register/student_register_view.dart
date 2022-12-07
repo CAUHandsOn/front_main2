@@ -101,6 +101,7 @@ class _StudentRegisterViewState extends State<StudentRegisterView> {
               height: 20,
             ),
             TextFormField(
+              obscureText: true,
               decoration: const InputDecoration(
                 labelText: 'Password',
                 border: OutlineInputBorder(),
@@ -119,6 +120,7 @@ class _StudentRegisterViewState extends State<StudentRegisterView> {
               height: 20,
             ),
             TextFormField(
+              obscureText: true,
               decoration: const InputDecoration(
                 labelText: 'Password Confirm',
                 border: OutlineInputBorder(),

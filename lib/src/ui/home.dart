@@ -91,6 +91,7 @@ class _HomeState extends State<Home> {
               height: 20,
             ),
             TextFormField(
+              obscureText: true,
               decoration: const InputDecoration(
                 labelText: '사용자 Password를 입력해주세요.',
                 border: OutlineInputBorder(),
