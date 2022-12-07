@@ -261,7 +261,7 @@ class _StudentClassroomInfoState extends State<StudentClassroomInfo> {
                         itemCount: provider.decodedMap[classroomName]!.length,
                         itemBuilder: (context, index) {
                           return Dismissible(
-                            key: ValueKey(provider.decodedMap[classroomName]![index]),
+                            key: UniqueKey(),
                             direction: DismissDirection.startToEnd,
                             //왼쪽에서 오른쪽으로 스와이프
                             onDismissed: (direction) { //값을 완전히 삭제

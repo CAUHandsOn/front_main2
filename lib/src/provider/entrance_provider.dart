@@ -32,7 +32,7 @@ class EntranceProvider extends ChangeNotifier {
         var classroomName = jsonDecode(response.body)['data']['room']['name'] as String;
         _classroomName = classroomName;
 
-        pvdSPF.addLog(classroomName);
+        pvdSPF.addLog(classroomName, '입실');
 
         // if (!pvdSPF.decodedMap.containsKey(classroomName)){ //건물 이름이 키로 존재하지 않으면 리스트 생성
         //   pvdSPF.decodedMap[classroomName] = <String>[];
@@ -78,12 +78,12 @@ class EntranceProvider extends ChangeNotifier {
     Timer.periodic(const Duration(seconds: 1), (timer) {
       idleTime++;
       print(idleTime);
-      if (idleTime >= 20 && isConnected == true) {
+      if (idleTime >= 5 && isConnected == true) {
         isConnected = false;
         _callExitAPI();
 
         if (pvdSPF != null){  //퇴장 시 퇴실로그 저장
-          pvdSPF.addLog(_classroomName); //퇴실 시간 추가
+          pvdSPF.addLog(_classroomName, '퇴실'); //퇴실 시간 추가
           // pvdSPF.decodedMap[_classroomName]!.add(DateFormat('yyyy-MM-dd kk:mm').format(DateTime.now())); //퇴실 시간 추가
           // pvdSPF.saveData('entryLog', pvdSPF.decodedMap); //퇴실 로그 저장
         }
