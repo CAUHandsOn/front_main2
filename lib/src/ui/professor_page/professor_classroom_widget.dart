@@ -145,6 +145,12 @@ class Search extends SearchDelegate {
           ),
           onTap: () {
             selectedResult = suggestionList[index];
+
+            var classroomID;
+            classroomID = thisClassroomListProvider.classroomList
+                .where((e) => e.name == selectedResult)
+                .toList()[0].id;
+
             Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -160,10 +166,8 @@ class Search extends SearchDelegate {
                               ),
                             ],
                             child: ProfessorClassroomInfo(
-                                classroomID: thisClassroomListProvider
-                                    .classroomList[index].id,
-                                classroomName: thisClassroomListProvider
-                                    .classroomList[index].name))));
+                                classroomID: classroomID,
+                                classroomName: selectedResult))));
           },
         );
       },

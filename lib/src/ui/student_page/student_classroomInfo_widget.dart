@@ -27,9 +27,6 @@ class _StudentClassroomInfoState extends State<StudentClassroomInfo> {
   @override
   void initState(){
     super.initState();
-    print('this is third ${context.read<SPFProvider>().decodedMap}');
-    print('context third ${context.toString()}');
-    print('this is third ${context.read<SPFProvider>().decodedMap}');
   }
 
   Widget _headCountWidget(int headCount) {
