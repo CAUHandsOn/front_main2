@@ -137,6 +137,12 @@ class Search extends SearchDelegate {
 
             print('here is id ${thisClassroomListProvider.classroomList[index].id}');
             selectedResult = suggestionList[index];
+            print('selected is $selectedResult');
+
+            var classroomID;
+            classroomID = thisClassroomListProvider.classroomList
+                .where((e) => e.name == selectedResult)
+                .toList()[0].id;
 
             Navigator.push(context, MaterialPageRoute(builder: (context) => MultiProvider(providers: [
               ChangeNotifierProvider(
@@ -148,8 +154,8 @@ class Search extends SearchDelegate {
                     ClassroomListProvider(),
               ),
             ], child : StudentClassroomInfo(
-                classroomID : thisClassroomListProvider.classroomList[index].id,
-                classroomName : thisClassroomListProvider.classroomList[index].name
+                classroomID : classroomID,
+                classroomName : selectedResult
             ))));
           },
         );

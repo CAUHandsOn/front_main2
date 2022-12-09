@@ -106,29 +106,29 @@ class _HomeState extends State<Home> {
                 return null;
               },
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Checkbox(
-                  value: _isIdSaved,
-                  onChanged: (value) {
-                    setState(() {
-                      _isIdSaved = value!;
-                    });
-                  },
-                ),
-                const Text('ID저장        '),
-                Checkbox(
-                  value: _isAutoLogin,
-                  onChanged: (value) {
-                    setState(() {
-                      _isAutoLogin = value!;
-                    });
-                  },
-                ),
-                const Text('자동로그인'),
-              ],
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.start,
+            //   children: [
+            //     Checkbox(
+            //       value: _isIdSaved,
+            //       onChanged: (value) {
+            //         setState(() {
+            //           _isIdSaved = value!;
+            //         });
+            //       },
+            //     ),
+            //     const Text('ID저장        '),
+            //     Checkbox(
+            //       value: _isAutoLogin,
+            //       onChanged: (value) {
+            //         setState(() {
+            //           _isAutoLogin = value!;
+            //         });
+            //       },
+            //     ),
+            //     const Text('자동로그인'),
+            //   ],
+            // ),
             const SizedBox(
               height: 20,
             ),
