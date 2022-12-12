@@ -14,7 +14,6 @@ import '../../provider/button_provider.dart';
 import '../../provider/classroom_provider.dart';
 import '../../provider/entrance_provider.dart';
 import '../../provider/sharedPreference_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class StudentWidget extends StatefulWidget {
   StudentWidget({Key? key, required this.user}) : super(key: key);
@@ -79,22 +78,23 @@ class _StudentWidgetState extends State<StudentWidget> {
     List<String> filtered_id = [
       '34:14:B5:41:C6:82',
       '34:14:B5:41:A2:7E',
-      'DC:99:CD:A5:D2:36',
-      '44:F0:9E:9B:E8:24'
+    ];
+    List<String> deviceList = [
+      'LE_WF-1000XM4',
+      'Buds2'
     ];
     log('Scanning device start');
-    List<String> deviceList = ['LE_WF-1000XM4', 'Buds2'];
     final flutterReactiveBle = FlutterReactiveBle();
     flutterReactiveBle
         .scanForDevices(withServices: services, scanMode: ScanMode.lowLatency)
         .listen((device) {
-      print(
-          'Scanning ! ${device.id} : ${device.name} : ${device.serviceUuids}');
+      // print(
+      //     'Scanning ! ${device.id} : ${device.name} : ${device.serviceUuids}');
       //code for handling results
-      if (filtered_id.contains(device.id) || deviceList.contains(device.id)) {
+      if (deviceList.contains(device.name)) {
         print(
             'Discover ! ${device.id} : ${device.name} : ${device.serviceUuids}');
-        _entranceProvider.signalReceive(context.read<SPFProvider>());
+        _entranceProvider.signalReceive(context.read<SPFProvider>(), device.name);
       }
     }, onError: (Object error) {
       //code for handling error
