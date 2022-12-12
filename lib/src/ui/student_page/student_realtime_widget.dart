@@ -131,7 +131,7 @@ class _StudentRealtimeWidgetState extends State<StudentRealtimeWidget> {
                     physics: const NeverScrollableScrollPhysics(),
                     children: classroom.studentList.map((item) {
                       return Padding(
-                        padding: const EdgeInsets.only(left: 10,right: 20),
+                        padding: const EdgeInsets.only(left: 10,right: 20,bottom: 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

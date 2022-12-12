@@ -38,6 +38,7 @@ class _HomeState extends State<Home> {
     // 권한 요청
     PermissionStatus status = await Permission.bluetoothScan.request();
     PermissionStatus status2 = await Permission.location.request();
+    PermissionStatus status3 = await Permission.bluetoothConnect.request();
 
     // 결과 확인
     if (!status.isGranted) {

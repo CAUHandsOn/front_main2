@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
@@ -70,10 +71,10 @@ class _StudentWidgetState extends State<StudentWidget> {
         widget.user.role, widget.user.accessToken);
     _entranceProvider = context.read<EntranceProvider>();
     _entranceProvider.initTimer(context.read<SPFProvider>());
+    startBluetooth();
   }
 
   void startBluetooth() {
-    _bottomNavigationProvider = Provider.of<BottomNavigationProvider>(context);
     List<Uuid> services = [];
     List<String> filtered_id = [
       '34:14:B5:41:C6:82',
@@ -87,11 +88,12 @@ class _StudentWidgetState extends State<StudentWidget> {
         .listen((device) {
       // print(
       //     'Scanning ! ${device.id} : ${device.name} : ${device.serviceUuids}');
-      //code for handling results
-      if (deviceList.contains(device.id)) {
+      // code for handling results
+      if (deviceList.contains(device.name)) {
         print(
             'Discover ! ${device.id} : ${device.name} : ${device.serviceUuids}');
-        _entranceProvider.signalReceive(context.read<SPFProvider>(), device.id);
+        _entranceProvider.signalReceive(context.read<SPFProvider>(), device.name);
+        //sleep(const Duration(seconds:3));
       }
     }, onError: (Object error) {
       //code for handling error
@@ -106,7 +108,7 @@ class _StudentWidgetState extends State<StudentWidget> {
     _bottomNavigationProvider = Provider.of<BottomNavigationProvider>(context);
     _buttonProvider = Provider.of<ButtonProvider>(context);
     _entranceProvider = context.watch<EntranceProvider>();
-    startBluetooth();
+    //startBluetooth();
     return Scaffold(
       body: _navigationBodyWidget(),
       bottomNavigationBar: _bottomNavigationBarWidget(),
