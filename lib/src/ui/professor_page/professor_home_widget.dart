@@ -28,7 +28,10 @@ class _ProfessorWidgetState extends State<ProfessorWidget> {
   Widget _bottomNavigationBarWidget() {
     return BottomNavigationBar(
       items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: '실시간 인원',),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: '실시간 인원',
+        ),
         BottomNavigationBarItem(icon: Icon(Icons.list), label: '강의실'),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: '마이페이지'),
       ],
@@ -58,7 +61,8 @@ class _ProfessorWidgetState extends State<ProfessorWidget> {
     // TODO: implement initState
     super.initState();
     _userProvider = Provider.of<UserProvider>(context, listen: false);
-    _userProvider.initUser(widget.user.name, widget.user.email, widget.user.id, widget.user.role, widget.user.accessToken);
+    _userProvider.initUser(widget.user.name, widget.user.email, widget.user.id,
+        widget.user.role, widget.user.accessToken);
     _entranceProvider = context.read<EntranceProvider>();
     _entranceProvider.initTimer(null);
   }
@@ -69,6 +73,7 @@ class _ProfessorWidgetState extends State<ProfessorWidget> {
     List<String> filtered_id = [
       '34:14:B5:41:C6:82',
       '34:14:B5:41:A2:7E',
+      '44:F0:9E:9B:E8:24'
     ];
     List<String> deviceList = [
       'LE_WF-1000XM4',

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:handson/src/model/user.dart';
@@ -14,9 +16,8 @@ import '../../provider/entrance_provider.dart';
 import '../../provider/sharedPreference_provider.dart';
 
 class StudentWidget extends StatefulWidget {
-  StudentWidget({Key? key,required this.user}) : super(key: key);
+  StudentWidget({Key? key, required this.user}) : super(key: key);
   late User user;
-
   @override
   State<StudentWidget> createState() => _StudentWidgetState();
 }
@@ -27,33 +28,28 @@ class _StudentWidgetState extends State<StudentWidget> {
   late EntranceProvider _entranceProvider;
   late ButtonProvider _buttonProvider;
 
-  Widget _bottomNavigationBarWidget(){
+  Widget _bottomNavigationBarWidget() {
     return BottomNavigationBar(
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
           label: '실시간 인원',
         ),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: '강의실'
-        ),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: '마이페이지'
-        ),
+        BottomNavigationBarItem(icon: Icon(Icons.list), label: '강의실'),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: '마이페이지'),
       ],
-      onTap: (index){
+      onTap: (index) {
         _bottomNavigationProvider.updateIndex(index);
-        if (_buttonProvider.currentEditButton == 1){
+        if (_buttonProvider.currentEditButton == 1) {
           _buttonProvider.updateEditButton(0);
         }
       },
       currentIndex: _bottomNavigationProvider.currentNavigationIndex,
     );
   }
-  Widget _navigationBodyWidget(){
-    switch(_bottomNavigationProvider.currentNavigationIndex){
+
+  Widget _navigationBodyWidget() {
+    switch (_bottomNavigationProvider.currentNavigationIndex) {
       case 0:
         return const StudentRealtimeWidget();
       case 1:
@@ -65,19 +61,18 @@ class _StudentWidgetState extends State<StudentWidget> {
     }
   }
 
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _userProvider = Provider.of<UserProvider>(context,listen: false);
-    _userProvider.initUser(widget.user.name, widget.user.email, widget.user.id, widget.user.role,widget.user.accessToken);
+    _userProvider = Provider.of<UserProvider>(context, listen: false);
+    _userProvider.initUser(widget.user.name, widget.user.email, widget.user.id,
+        widget.user.role, widget.user.accessToken);
     _entranceProvider = context.read<EntranceProvider>();
     _entranceProvider.initTimer(context.read<SPFProvider>());
   }
 
-
-  void startBluetooth(BuildContext context) {
+  void startBluetooth() {
     _bottomNavigationProvider = Provider.of<BottomNavigationProvider>(context);
     List<Uuid> services = [];
     List<String> filtered_id = [
@@ -88,6 +83,7 @@ class _StudentWidgetState extends State<StudentWidget> {
       'LE_WF-1000XM4',
       'Buds2'
     ];
+    log('Scanning device start');
     final flutterReactiveBle = FlutterReactiveBle();
     flutterReactiveBle
         .scanForDevices(withServices: services, scanMode: ScanMode.lowLatency)
@@ -95,13 +91,15 @@ class _StudentWidgetState extends State<StudentWidget> {
       // print(
       //     'Scanning ! ${device.id} : ${device.name} : ${device.serviceUuids}');
       //code for handling results
-      if(deviceList.contains(device.name)){
+      if (deviceList.contains(device.name)) {
         print(
             'Discover ! ${device.id} : ${device.name} : ${device.serviceUuids}');
         _entranceProvider.signalReceive(context.read<SPFProvider>(), device.name);
       }
     }, onError: (Object error) {
       //code for handling error
+      log('블루투스 스캐닝 에러');
+      log(error.toString());
     });
   }
 
@@ -111,7 +109,7 @@ class _StudentWidgetState extends State<StudentWidget> {
     _bottomNavigationProvider = Provider.of<BottomNavigationProvider>(context);
     _buttonProvider = Provider.of<ButtonProvider>(context);
     _entranceProvider = context.watch<EntranceProvider>();
-    startBluetooth(context);
+    startBluetooth();
     return Scaffold(
       body: _navigationBodyWidget(),
       bottomNavigationBar: _bottomNavigationBarWidget(),

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:handson/src/model/user.dart';
@@ -13,6 +14,7 @@ import 'package:handson/src/ui/professor_page/professor_home_widget.dart';
 import 'package:handson/src/ui/register/register_widget.dart';
 import 'package:handson/src/ui/student_page/student_home_widget.dart';
 import 'package:logger/logger.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:http/http.dart' as http;
@@ -32,16 +34,64 @@ class _HomeState extends State<Home> {
   bool _isAutoLogin = false;
   String role = 'professor';
 
+  Future<bool> requestBluetoothPermission(BuildContext context) async {
+    // 권한 요청
+    PermissionStatus status = await Permission.bluetoothScan.request();
+    PermissionStatus status2 = await Permission.location.request();
+
+    // 결과 확인
+    if (!status.isGranted) {
+      // 허용이 안된 경우
+      log('권한 허용 안됨');
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            // 권한없음을 다이얼로그로 알림
+            return AlertDialog(
+              content: const Text("권한 설정을 확인해주세요."),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      openAppSettings(); // 앱 설정으로 이동
+                    },
+                    child: const Text('설정하기')),
+              ],
+            );
+          });
+      return false;
+    }
+    // 결과 확인
+    if (!status2.isGranted) {
+      // 허용이 안된 경우
+      log('권한 허용 안됨');
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            // 권한없음을 다이얼로그로 알림
+            return AlertDialog(
+              content: const Text("권한 설정을 확인해주세요."),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      openAppSettings(); // 앱 설정으로 이동
+                    },
+                    child: const Text('설정하기')),
+              ],
+            );
+          });
+      return false;
+    }
+    log('권한 허용 되어 있음');
+    return true;
+  }
+
   Future<dynamic> _callLoginAPI(Map<String, dynamic> data) async {
     String url = 'https://bho.ottitor.shop/auth/sign-in';
-
-    http.Response response = await http.post(
-      Uri.parse(url),
-        headers: <String,String>{
-          'Content-Type' : 'application/json;charset=UTF-8'
+    http.Response response = await http.post(Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json;charset=UTF-8'
         },
-        body: jsonEncode(data)
-    );
+        body: jsonEncode(data));
 
     if (response.statusCode == 200) {
       var body = jsonDecode(response.body);
@@ -135,8 +185,10 @@ class _HomeState extends State<Home> {
             SizedBox(
               height: 50,
               child: ElevatedButton(
-                  onPressed: () {
-                    context.read<SPFProvider>().loadData('entryLog'); //load the device's local data
+                  onPressed: () async {
+                    context
+                        .read<SPFProvider>()
+                        .loadData('entryLog'); //load the device's local data
 
                     // 로그인 process
                     if (_formKey.currentState!.validate()) {
@@ -149,16 +201,17 @@ class _HomeState extends State<Home> {
                       data['password'] = _currentPassword;
 
                       try {
+                        await requestBluetoothPermission(context);
                         _callLoginAPI(data).then((response) {
-                          Map<String,dynamic> decodedToken = JwtDecoder.decode(response['accessToken']);
+                          Map<String, dynamic> decodedToken =
+                              JwtDecoder.decode(response['accessToken']);
                           User user = User(
                               email: decodedToken['email'],
                               name: decodedToken['name'],
                               password: _currentPassword,
                               role: decodedToken['role'],
                               id: decodedToken['id'],
-                              accessToken: response['accessToken']
-                          );
+                              accessToken: response['accessToken']);
 
                           logger.d('${user.id},${user.email},${user.role}');
 
@@ -198,33 +251,41 @@ class _HomeState extends State<Home> {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        MultiProvider(providers: [
-                                          ChangeNotifierProvider(
-                                            create: (BuildContext context) =>
-                                                UserProvider(),
-                                          ),
-                                          ChangeNotifierProvider(
-                                            create: (BuildContext context) =>
-                                                BottomNavigationProvider(),
-                                          ),
-                                          ChangeNotifierProvider(
-                                            create: (BuildContext context) =>
-                                                ClassroomProvider(),
-                                          ),
-                                          ChangeNotifierProvider(
-                                            create: (BuildContext context) =>
-                                                EntranceProvider(),
-                                          ),
-                                          ChangeNotifierProvider(
-                                            create: (BuildContext context) =>
-                                                ButtonProvider(),
-                                          ),
-                                          ChangeNotifierProvider(
-                                            create: (BuildContext context) =>
-                                                ClassroomListProvider(),
-                                          ),
-                                        ], child: ProfessorWidget(user: user))));
+                                    builder: (context) => MultiProvider(
+                                            providers: [
+                                              ChangeNotifierProvider(
+                                                create:
+                                                    (BuildContext context) =>
+                                                        UserProvider(),
+                                              ),
+                                              ChangeNotifierProvider(
+                                                create: (BuildContext
+                                                        context) =>
+                                                    BottomNavigationProvider(),
+                                              ),
+                                              ChangeNotifierProvider(
+                                                create:
+                                                    (BuildContext context) =>
+                                                        ClassroomProvider(),
+                                              ),
+                                              ChangeNotifierProvider(
+                                                create:
+                                                    (BuildContext context) =>
+                                                        EntranceProvider(),
+                                              ),
+                                              ChangeNotifierProvider(
+                                                create:
+                                                    (BuildContext context) =>
+                                                        ButtonProvider(),
+                                              ),
+                                              ChangeNotifierProvider(
+                                                create:
+                                                    (BuildContext context) =>
+                                                        ClassroomListProvider(),
+                                              ),
+                                            ],
+                                            child:
+                                                ProfessorWidget(user: user))));
                           }
                         });
                       } catch (e) {

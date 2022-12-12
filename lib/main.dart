@@ -10,6 +10,7 @@ import 'package:handson/src/ui/professor_page/professor_classroom_widget.dart';
 import 'package:handson/src/ui/splash_widget.dart';
 import 'package:handson/src/ui/student_page/student_classroom_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 void main() {
   runApp(MultiProvider(
