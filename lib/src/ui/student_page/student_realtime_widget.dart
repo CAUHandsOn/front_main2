@@ -96,7 +96,7 @@ class _StudentRealtimeWidgetState extends State<StudentRealtimeWidget> {
                   const SizedBox(height: 40,),
                   _headCountWidget(classroom.studentList.length),
                   const SizedBox(height: 40,),
-                  _totalCountWidget(10),
+                  _totalCountWidget(20),
                   const SizedBox(height: 40,),
                 ],
               ),
