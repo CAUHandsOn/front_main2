@@ -83,7 +83,6 @@ class _StudentWidgetState extends State<StudentWidget> {
     List<String> filtered_id = [
       '34:14:B5:41:C6:82',
       '34:14:B5:41:A2:7E',
-      'DC:99:CD:A5:D2:36'
     ];
     List<String> deviceList = [
       'LE_WF-1000XM4',
@@ -96,7 +95,7 @@ class _StudentWidgetState extends State<StudentWidget> {
       // print(
       //     'Scanning ! ${device.id} : ${device.name} : ${device.serviceUuids}');
       //code for handling results
-      if(filtered_id.contains(device.id) || deviceList.contains(device.id)){
+      if(deviceList.contains(device.name)){
         print(
             'Discover ! ${device.id} : ${device.name} : ${device.serviceUuids}');
         _entranceProvider.signalReceive(context.read<SPFProvider>(), device.name);
