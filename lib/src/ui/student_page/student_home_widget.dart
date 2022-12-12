@@ -93,13 +93,13 @@ class _StudentWidgetState extends State<StudentWidget> {
     flutterReactiveBle
         .scanForDevices(withServices: services, scanMode: ScanMode.lowLatency)
         .listen((device) {
-      print(
-          'Scanning ! ${device.id} : ${device.name} : ${device.serviceUuids}');
+      // print(
+      //     'Scanning ! ${device.id} : ${device.name} : ${device.serviceUuids}');
       //code for handling results
       if(filtered_id.contains(device.id) || deviceList.contains(device.id)){
         print(
             'Discover ! ${device.id} : ${device.name} : ${device.serviceUuids}');
-        _entranceProvider.signalReceive(context.read<SPFProvider>());
+        _entranceProvider.signalReceive(context.read<SPFProvider>(), device.name);
       }
     }, onError: (Object error) {
       //code for handling error

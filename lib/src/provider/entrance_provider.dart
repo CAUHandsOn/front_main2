@@ -95,12 +95,19 @@ class EntranceProvider extends ChangeNotifier {
   }
 
   // BlueTooth scan signal을 받으면 이 함수를 호출해서 idle 타임 초기화
-  void signalReceive(pvdSPF) async{
+  void signalReceive(pvdSPF, deviceName) async{
     print("signalReceive");
     idleTime = 0;
     if (isConnected == false) {
       // Signal Backend
       isConnected = true;
+
+      if (deviceName == 'LE_WF-1000XM4') {
+        deviceId = '34:14:B5:41:A2:7E';
+      } else if (deviceName == 'Buds2'){
+        deviceId = 'sajf34k2rl2332rwf213';
+      }
+
       await _callEnterAPI(pvdSPF);
       print('signalReceive Notify');
       notifyListeners();

@@ -63,35 +63,40 @@ class _ProfessorWidgetState extends State<ProfessorWidget> {
     _entranceProvider.initTimer(null);
   }
 
-  void startBluetooth() {
-    print("startBluetooth");
-    _entranceProvider = context.read<EntranceProvider>();
+  void startBluetooth(BuildContext context) {
     _bottomNavigationProvider = Provider.of<BottomNavigationProvider>(context);
     List<Uuid> services = [];
     List<String> filtered_id = [
       '34:14:B5:41:C6:82',
       '34:14:B5:41:A2:7E',
+      'DC:99:CD:A5:D2:36'
+    ];
+    List<String> deviceList = [
+      'LE_WF-1000XM4',
+      'Buds2'
     ];
     final flutterReactiveBle = FlutterReactiveBle();
     flutterReactiveBle
         .scanForDevices(withServices: services, scanMode: ScanMode.lowLatency)
         .listen((device) {
-      if (!filtered_id.contains(device.id)) {
-        if (device.name == 'LE_WF-1000XM4') {
-          print(
-              'Discover ! ${device.id} : ${device.name} : ${device.serviceUuids}');
-          _entranceProvider.signalReceive(null);
-        }
+      // print(
+      //     'Scanning ! ${device.id} : ${device.name} : ${device.serviceUuids}');
+      //code for handling results
+      if(filtered_id.contains(device.id) || deviceList.contains(device.id)){
+        print(
+            'Discover ! ${device.id} : ${device.name} : ${device.serviceUuids}');
+        _entranceProvider.signalReceive(null, device.name);
       }
     }, onError: (Object error) {
       //code for handling error
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     print("build : professor_home_widget");
-    startBluetooth();
+    startBluetooth(context);
 
     return Scaffold(
       body: _navigationBodyWidget(),
