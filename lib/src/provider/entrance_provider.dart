@@ -14,7 +14,14 @@ class EntranceProvider extends ChangeNotifier {
   var _classroomName;
 
   // 맨처음 singnal을 받으면 userProvider에서 정보를 받아서 서버로 전송
-  _callEnterAPI(SPFProvider pvdSPF) async {
+  _callEnterAPI(dynamic pvdSPF) async {
+
+    if(pvdSPF == null){
+      isConnected = true;
+      notifyListeners();
+      return;
+    }
+
     isConnected = true;
     String url = 'https://bho.ottitor.shop/room/$deviceId/me';
 
