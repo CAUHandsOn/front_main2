@@ -79,10 +79,7 @@ class _StudentWidgetState extends State<StudentWidget> {
       '34:14:B5:41:C6:82',
       '34:14:B5:41:A2:7E',
     ];
-    List<String> deviceList = [
-      'LE_WF-1000XM4',
-      'Buds2'
-    ];
+    List<String> deviceList = ['LE_WF-1000XM4', 'Buds2', '44:F0:9E:9B:E8:24'];
     log('Scanning device start');
     final flutterReactiveBle = FlutterReactiveBle();
     flutterReactiveBle
@@ -91,10 +88,10 @@ class _StudentWidgetState extends State<StudentWidget> {
       // print(
       //     'Scanning ! ${device.id} : ${device.name} : ${device.serviceUuids}');
       //code for handling results
-      if (deviceList.contains(device.name)) {
+      if (deviceList.contains(device.id)) {
         print(
             'Discover ! ${device.id} : ${device.name} : ${device.serviceUuids}');
-        _entranceProvider.signalReceive(context.read<SPFProvider>(), device.name);
+        _entranceProvider.signalReceive(context.read<SPFProvider>(), device.id);
       }
     }, onError: (Object error) {
       //code for handling error

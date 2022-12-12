@@ -18,18 +18,20 @@ class EntranceProvider extends ChangeNotifier {
     isConnected = true;
     String url = 'https://bho.ottitor.shop/room/$deviceId/me';
 
-    http.Response response = await http.post(Uri.parse(url),
-        headers: <String, String>{
-          'Content-Type': 'application/json;charset=UTF-8',
-          'Authorization' : 'Bearer ${UserProvider.accessToken}'
-        });
+    http.Response response =
+        await http.post(Uri.parse(url), headers: <String, String>{
+      'Content-Type': 'application/json;charset=UTF-8',
+      'Authorization': 'Bearer ${UserProvider.accessToken}'
+    });
 
     if (response.statusCode == 200) {
       print("callEnterAPI success!");
       print('CallEnterAPI Notify');
 
-      if (pvdSPF != null){ //학생이면 출입 로그 추가
-        var classroomName = jsonDecode(response.body)['data']['room']['name'] as String;
+      if (pvdSPF != null) {
+        //학생이면 출입 로그 추가
+        var classroomName =
+            jsonDecode(response.body)['data']['room']['name'] as String;
         _classroomName = classroomName;
 
         pvdSPF.addLog(classroomName, '입실');
@@ -50,15 +52,15 @@ class EntranceProvider extends ChangeNotifier {
   }
 
   // idletime이 60초 이상 지속되면 서버로 정보 전송
-  void _callExitAPI() async{
+  void _callExitAPI() async {
     isConnected = false;
     String url = 'https://bho.ottitor.shop/room/$deviceId/me';
 
-    http.Response response = await http.delete(Uri.parse(url),
-        headers: <String, String>{
-          'Content-Type': 'application/json;charset=UTF-8',
-          'Authorization' : 'Bearer ${UserProvider.accessToken}'
-        });
+    http.Response response =
+        await http.delete(Uri.parse(url), headers: <String, String>{
+      'Content-Type': 'application/json;charset=UTF-8',
+      'Authorization': 'Bearer ${UserProvider.accessToken}'
+    });
     if (response.statusCode == 200) {
       print("callExitAPI success!");
       return;
@@ -82,7 +84,8 @@ class EntranceProvider extends ChangeNotifier {
         isConnected = false;
         _callExitAPI();
 
-        if (pvdSPF != null){  //퇴장 시 퇴실로그 저장
+        if (pvdSPF != null) {
+          //퇴장 시 퇴실로그 저장
           pvdSPF.addLog(_classroomName, '퇴실'); //퇴실 시간 추가
           // pvdSPF.decodedMap[_classroomName]!.add(DateFormat('yyyy-MM-dd kk:mm').format(DateTime.now())); //퇴실 시간 추가
           // pvdSPF.saveData('entryLog', pvdSPF.decodedMap); //퇴실 로그 저장
@@ -95,7 +98,7 @@ class EntranceProvider extends ChangeNotifier {
   }
 
   // BlueTooth scan signal을 받으면 이 함수를 호출해서 idle 타임 초기화
-  void signalReceive(pvdSPF, deviceName) async{
+  void signalReceive(pvdSPF, deviceName) async {
     print("signalReceive");
     idleTime = 0;
     if (isConnected == false) {
@@ -104,7 +107,9 @@ class EntranceProvider extends ChangeNotifier {
 
       if (deviceName == 'LE_WF-1000XM4') {
         deviceId = '34:14:B5:41:A2:7E';
-      } else if (deviceName == 'Buds2'){
+      } else if (deviceName == 'Buds2') {
+        deviceId = 'sajf34k2rl2332rwf213';
+      } else if (deviceName == '44:F0:9E:9B:E8:24') {
         deviceId = 'sajf34k2rl2332rwf213';
       }
 
